@@ -1,7 +1,9 @@
 import pygame
 from pygame.locals import *
 
-from Gl import Renderer
+from Shaders import *
+
+from GlOpen import Renderer
 
 width = 960
 height = 540
@@ -11,9 +13,19 @@ pygame.init()
 screen = pygame.display.set_mode((width, height), pygame.OPENGL | pygame.DOUBLEBUF)
 clock = pygame.time.Clock() # Esto servirá para tomar el control de los FPS
 
+delta_time = 0 # Diferencia entre cuadros
+
 rend = Renderer(screen)
 
-delta_time = 0 # Diferencia entre cuadros
+rend.set_shaders(vertex_shader, fragment_shader)
+
+triangle = [
+    -0.5, -0.5, 0,   1, 0, 0,
+        0, 0.5, 0,   0, 1, 0,
+     0.5, -0.5, 0,    0, 0, 1
+]
+
+rend.scene.append(Buffer(triangle))
 
 is_running = True
 
