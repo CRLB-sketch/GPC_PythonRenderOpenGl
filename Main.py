@@ -3,7 +3,7 @@ from pygame.locals import *
 
 from Shaders import *
 
-from GlOpen import Renderer
+from GlOpen import *
 
 width = 960
 height = 540

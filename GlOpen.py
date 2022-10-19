@@ -30,8 +30,8 @@ class Buffer(object):
 
         # Mandar la informacion de vertices
         glBufferData(GL_ARRAY_BUFFER,           # Buffer ID
-                     self.vertBuffer.nbytes,    # Buffer size in bytes
-                     self.vertBuffer,           # Buffer data
+                     self.vert_buffer.nbytes,    # Buffer size in bytes
+                     self.vert_buffer,           # Buffer data
                      GL_STATIC_DRAW)            # Usage
 
         # Atributos
@@ -56,7 +56,7 @@ class Buffer(object):
 
         glEnableVertexAttribArray(1)
 
-        glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertBuffer) / 6) )
+        glDrawArrays(GL_TRIANGLES, 0, int(len(self.vert_buffer) / 6) )
 
 class Renderer(object):
     def __init__(self, screen) -> None:
