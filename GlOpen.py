@@ -69,6 +69,34 @@ class Renderer(object):
 
         self.scene = []
         self.active_shader = None
+        
+        # ViewMatrix
+        self.cam_position = glm.vec3(0,0,0)
+        self.cam_rotation = glm.vec3(0,0,0)
+        self.view_matrix = self.get_view_matrix()
+
+        # Projection Matrix
+        self.projectionMatrix = glm.perspective(
+            glm.radians(60),        # FOV
+            self.width/self.height, # Aspect Ratio
+            0.1,                    # Near Plane
+            1000 # Far Plane
+        )                   
+        
+    def get_view_matrix(self):
+        identity = glm.mat4(1)
+
+        translateMat = glm.translate(identity, self.cam_position)
+
+        pitch = glm.rotate(identity, glm.radians(self.cam_rotation.x), glm.vec3(1,0,0))
+        yaw   = glm.rotate(identity, glm.radians(self.cam_rotation.y), glm.vec3(0,1,0))
+        roll  = glm.rotate(identity, glm.radians(self.cam_rotation.z), glm.vec3(0,0,1))
+
+        rotationMat = pitch * yaw * roll
+
+        camMatrix = translateMat * rotationMat
+
+        return glm.inverse(camMatrix)
 
     def set_shaders(self, vertex_shader, fragment_shader):
         if vertex_shader is not None and fragment_shader is not None:
@@ -78,6 +106,9 @@ class Renderer(object):
             )
         else:
             self.active_shader = None
+            
+    def update(self):
+        self.view_matrix = self.get_view_matrix()
 
     def render(self) -> None:
         # alfa es transparencia :v
