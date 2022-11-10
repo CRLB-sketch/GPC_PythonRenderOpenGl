@@ -10,7 +10,8 @@ from Obj import Obj
 from pygame import image
 
 class Model(object):
-    def __init__(self, objName, textureName):
+        
+    def __init__(self, objName, textureName, textureName2 = None):
         self.model = Obj(objName)
 
         self.createVertexBuffer()
@@ -18,12 +19,16 @@ class Model(object):
         self.position = glm.vec3(0,0,0)
         self.rotation = glm.vec3(0,0,0)
         self.scale = glm.vec3(1,1,1)
-
+        
         self.textureSurface = image.load(textureName)
         self.textureData = image.tostring(self.textureSurface, "RGB", True)
         self.texture = glGenTextures(1)
-
-
+        
+        textureName2 = textureName if textureName2 == None else textureName2
+        self.textureSurface2 = image.load(textureName2)
+        self.textureData2 = image.tostring(self.textureSurface2, "RGB", True)
+        self.texture2 = glGenTextures(1)
+        
     def createVertexBuffer(self):
         buffer = []
 
@@ -151,9 +156,21 @@ class Model(object):
                      GL_RGB,                            # Format
                      GL_UNSIGNED_BYTE,                  # Type
                      self.textureData)                  # Data
-
         glGenerateMipmap(GL_TEXTURE_2D)
-
-
+        
+        # Dar la textura
+        glActiveTexture( GL_TEXTURE1 )
+        glBindTexture(GL_TEXTURE_2D, self.texture2)
+        glTexImage2D(GL_TEXTURE_2D,                     # Texture Type
+                     0,                                 # Positions
+                     GL_RGB,                            # Format
+                     self.textureSurface2.get_width(),   # Width
+                     self.textureSurface2.get_height(),  # Height
+                     0,                                 # Border
+                     GL_RGB,                            # Format
+                     GL_UNSIGNED_BYTE,                  # Type
+                     self.textureData2)                  # Data
+        glGenerateMipmap(GL_TEXTURE_2D)
+        
 
         glDrawArrays(GL_TRIANGLES, 0, self.polycount * 3 )

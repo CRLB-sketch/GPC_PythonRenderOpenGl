@@ -23,7 +23,8 @@ rend.set_shaders(vertex_shader, fragment_shader)
 
 rend.target.z = -5
 
-face = Model("models/model.obj", "models/model.bmp")
+# face = Model("models/model.obj", "models/model.bmp")
+face = Model("models/model.obj", "models/model.bmp", "models/earthDay.bmp")
 
 face.position.z -= 5
 face.scale.x = 2
@@ -92,7 +93,18 @@ while is_running:
     if keys[K_1]:
         rend.set_shaders(vertex_shader, fragment_shader)
     elif keys[K_2]:
+        rend.set_shaders(vertex_shader_animation, fragment_shader_animation)
+    elif keys[K_3]:
         rend.set_shaders(vertex_shader_color, fragment_shader_color)
+    # ! --- SHADERS PARA EL LAB -----------------------------------------------------------
+    elif keys[K_4]:
+        rend.set_shaders(vertex_shader_best, toon_shader_fs)
+    elif keys[K_5]:
+        rend.set_shaders(vertex_shader_best, rainbow_fs)
+    elif keys[K_6]:
+        rend.set_shaders(mix_two_textures_vs, mix_two_textures_fs)    
+    elif keys[K_7]:
+        rend.set_shaders(party_extreme_vs, party_extreme_fs)
     # !------------------------------------------------------------------------------------
         
     delta_time = clock.tick(60) / 1000
