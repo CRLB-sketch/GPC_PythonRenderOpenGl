@@ -7,15 +7,21 @@ from OpenGL.GL import *
 
 from Obj import Obj
 
+from pygame import image
+
 class Model(object):
-    def __init__(self, obj_name):
-        self.model = Obj(obj_name)
-        
+    def __init__(self, objName, textureName):
+        self.model = Obj(objName)
+
         self.createVertexBuffer()
-                
+
         self.position = glm.vec3(0,0,0)
         self.rotation = glm.vec3(0,0,0)
         self.scale = glm.vec3(1,1,1)
+
+        self.textureSurface = image.load(textureName)
+        self.textureData = image.tostring(self.textureSurface, "RGB", True)
+        self.texture = glGenTextures(1)
 
 
     def createVertexBuffer(self):
@@ -74,7 +80,7 @@ class Model(object):
         # Vertex Array Object
         self.VAO = glGenVertexArrays(1)
 
-    def getModelMatrix(self):
+    def get_model_matrix(self):
         identity = glm.mat4(1)
 
         translateMat = glm.translate(identity, self.position)
@@ -132,5 +138,22 @@ class Model(object):
 
         glEnableVertexAttribArray(2)
 
-        glDrawArrays(GL_TRIANGLES, 0, self.polycount * 3 )
 
+        # Dar la textura
+        glActiveTexture( GL_TEXTURE0 )
+        glBindTexture(GL_TEXTURE_2D, self.texture)
+        glTexImage2D(GL_TEXTURE_2D,                     # Texture Type
+                     0,                                 # Positions
+                     GL_RGB,                            # Format
+                     self.textureSurface.get_width(),   # Width
+                     self.textureSurface.get_height(),  # Height
+                     0,                                 # Border
+                     GL_RGB,                            # Format
+                     GL_UNSIGNED_BYTE,                  # Type
+                     self.textureData)                  # Data
+
+        glGenerateMipmap(GL_TEXTURE_2D)
+
+
+
+        glDrawArrays(GL_TRIANGLES, 0, self.polycount * 3 )
