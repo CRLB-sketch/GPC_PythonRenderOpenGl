@@ -6,8 +6,6 @@ import glm # pip install PyGLM
 
 from numpy import array, float32
 
-from random import randrange
-
 # pip install PyOpenGL
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
@@ -30,7 +28,8 @@ class Renderer(object):
         self.value = 0;
 
         self.target = glm.vec3(0,0,0)
-        self.angle = 0
+        self.angle_x = 0
+        self.angle_y = 0
         self.cam_distance = 5
 
         # ViewMatrix
@@ -45,9 +44,6 @@ class Renderer(object):
             0.1,                    
             1000
         )
-        
-        # Extra
-        self.num_random = randrange(2)
         
     def filled_mode(self):
         glPolygonMode(GL_FRONT, GL_FILL)
@@ -104,14 +100,11 @@ class Renderer(object):
 
             glUniform3fv( glGetUniformLocation(self.active_shader, "pointLight"), 1, glm.value_ptr(self.point_light))
 
-            glUniform1f( glGetUniformLocation(self.active_shader, "number_random1"), self.num_random)
-            glUniform1f( glGetUniformLocation(self.active_shader, "number_random2"), self.num_random)
-            glUniform1f( glGetUniformLocation(self.active_shader, "number_random3"), self.num_random)
-
         for obj in self.scene:
             if self.active_shader is not None:
-                glUniformMatrix4fv( glGetUniformLocation(self.active_shader, "modelMatrix"),
-                                    1, GL_FALSE, glm.value_ptr(obj.get_model_matrix()))
-
+                glUniformMatrix4fv( 
+                    glGetUniformLocation(self.active_shader, "modelMatrix"),
+                    1, GL_FALSE, glm.value_ptr(obj.get_model_matrix())
+                )
 
             obj.render()
