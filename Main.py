@@ -106,7 +106,7 @@ if __name__ == "__main__":
     rend.target.z = -5
 
     model_actual = None
-    model_1 = createModel("resources/models/model.obj", "resources/textures/model.bmp", "resources/textures/earthDay.bmp", [0, 5], [2, 2, 2])
+    model_1 = createModel("resources/models/Cat.obj", "resources/textures/Cat.bmp", "resources/textures/earthDay.bmp", [1, 5], [0.07, 0.07, 0.07])
     model_2 = createModel("resources/models/PenguinBaseMesh.obj", "resources/textures/Penguin.bmp", "resources/textures/earthDay.bmp", [1.5, 5], [2.5, 2.5, 2.5])
     model_3 = createModel("resources/models/Dog.obj", "resources/textures/AustralianDog.bmp", "resources/textures/earthDay.bmp", [1.5, 5], [0.75, 0.75, 0.75])
     model_4 = createModel("resources/models/GunS.obj", "resources/textures/handgun_S.bmp", "resources/textures/earthDay.bmp", [0, 5], [2, 2, 2])
